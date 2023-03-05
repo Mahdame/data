@@ -1,0 +1,441 @@
+openapi: 3.0.3
+info:
+  title: Data
+  description: Data tracking.
+  version: 1.0.0
+servers:
+- url: http://localhost:8082/tracking
+  description: Localhost - Dev
+paths:
+  /data:
+    get:
+      tags:
+      - Data
+      summary: Get Data list
+      description: This operation is used to retrieve a list of Data.
+      operationId: list_data
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDataResponse'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "500":
+          description: Unexpected errors not mapped to status codes mentioned above
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-openapi-router-controller: swagger_server.controllers.data_controller
+    post:
+      tags:
+      - Data
+      summary: Create new Data
+      description: This operation is used to create a new Data on System.
+      operationId: create_data
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDataRequest'
+        required: true
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateDataResponse'
+        "400":
+          description: Parameters missing in request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "409":
+          description: There is already a data registered with same name or mail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "500":
+          description: Unexpected errors not mapped to status codes mentioned above
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-openapi-router-controller: swagger_server.controllers.data_controller
+  /data/{dataId}:
+    get:
+      tags:
+      - Data
+      summary: Get a single Data's info
+      description: This operation is used to retrieve the details of a specific device.
+      operationId: get_data
+      parameters:
+      - name: dataId
+        in: path
+        description: Unique identifier of the Data in the database
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/UUID'
+        example: 0af401df-7d7a-1f36-817d-7b0a058d0003
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetDataResponse'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "500":
+          description: Unexpected errors not mapped to status codes mentioned above
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-openapi-router-controller: swagger_server.controllers.data_controller
+    put:
+      tags:
+      - Data
+      summary: Update Data's attributes
+      description: This operation is used to update some of the Data's attributes.
+      operationId: update_data
+      parameters:
+      - name: dataId
+        in: path
+        description: Unique identifier of the Data in the database
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/UUID'
+        example: 0af401df-7d7a-1f36-817d-7b0a058d0003
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDataRequest'
+        required: true
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: "Parameters missing in request or request is malformed. For\
+            \ example, the mail is not in the correct format."
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "409":
+          description: There is already a Data registered with same name or email
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "500":
+          description: Unexpected errors not mapped to status codes mentioned above
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-openapi-router-controller: swagger_server.controllers.data_controller
+    delete:
+      tags:
+      - Data
+      summary: Delete Data
+      description: This operation is delete a Data.
+      operationId: delete_data
+      parameters:
+      - name: dataId
+        in: path
+        description: Unique identifier of the Data in the database
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/UUID'
+        example: 0af401df-7d7a-1f36-817d-7b0a058d0003
+      responses:
+        "204":
+          description: No Content
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "404":
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "409":
+          description: Delete a data that has vehicles is not allowed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        "500":
+          description: Unexpected errors not mapped to status codes mentioned above
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      x-openapi-router-controller: swagger_server.controllers.data_controller
+components:
+  schemas:
+    GetDataResponse:
+      required:
+      - dataId
+      - dateTime
+      - vehicle
+      type: object
+      properties:
+        dataId:
+          $ref: '#/components/schemas/UUID'
+        vehicle:
+          $ref: '#/components/schemas/Vehicle'
+        dateTime:
+          type: string
+          description: Date/Time
+          example: 2023-03-05T17:32:28Z
+      example:
+        dataId: 0af401df-7d7a-1f36-817d-7b0a058d0003
+        vehicle:
+          vehicleId: 1
+          dataOwner: John Doe
+          telemetryProfile: Profile
+          currentDriver: Jane Doe
+          numberPlate: AB-C1-23
+          vin: 5sdfsdf4657sd568sdfsd568568
+          color: Blue
+        dateTime: 2023-03-05T17:32:28Z
+    CreateDataRequest:
+      required:
+      - dateTime
+      - vehicle
+      type: object
+      properties:
+        vehicle:
+          $ref: '#/components/schemas/CreateDataRequest_vehicle'
+        dateTime:
+          type: string
+          description: Date/Time
+          example: 2023-03-05T17:32:28Z
+    CreateDataResponse:
+      required:
+      - dataId
+      type: object
+      properties:
+        dataId:
+          $ref: '#/components/schemas/UUID'
+      example:
+        dataId: 0af401df-7d7a-1f36-817d-7b0a058d0003
+    ListDataResponse:
+      required:
+      - content
+      - totalResults
+      type: object
+      properties:
+        content:
+          type: array
+          description: list of paged items
+          items:
+            $ref: '#/components/schemas/GetDataResponse'
+        totalResults:
+          type: integer
+          description: total number of records
+          format: int64
+          example: 50
+      description: generic paged response
+      example:
+        totalResults: 2
+        content:
+        - dataId: 0af401df-7d7a-1f36-817d-7b0a058d0003
+          vehicle:
+            vehicleId: 1
+            dataOwner: John Doe
+            telemetryProfile: Profile
+            currentDriver: Jane Doe
+            numberPlate: AB-C1-23
+            vin: 5sdfsdf4657sd568sdfsd568568
+            color: Blue
+          dateTime: 2023-03-05T17:32:28Z
+        - dataId: 0af401df-7d7a-1f36-817d-7b0a058d0002
+          vehicle:
+            vehicleId: 2
+            dataOwner: John Doe
+            telemetryProfile: Profile
+            currentDriver: Jane Doe
+            numberPlate: AB-C1-23
+            vin: 5sdfsdf4657sd568sdfsd568568
+            color: Blue
+          dateTime: 2023-03-05T17:32:28Z
+    UpdateDataRequest:
+      type: object
+      properties:
+        vehicle:
+          $ref: '#/components/schemas/UpdateDataRequest_vehicle'
+        dateTime:
+          type: string
+          description: Date/Time
+          example: 2023-03-05T17:32:28Z
+    EnumSensorType:
+      type: string
+      description: type of Sensor
+      enum:
+      - RPM
+      - ODOMETER
+      - SPEED
+    ErrorResponse:
+      required:
+      - errorCode
+      - errorMessage
+      - errorType
+      type: object
+      properties:
+        code:
+          type: string
+          description: Application error code
+          example: XYZ0001
+        type:
+          $ref: '#/components/schemas/ErrorTypeEnum'
+        message:
+          type: string
+          description: Short error explanation
+          example: Unauthorized
+        details:
+          type: string
+          description: Short error detail
+          example: Parameter X has invalid value
+    ErrorTypeEnum:
+      type: string
+      description: Error Type
+      enum:
+      - PERSISTENCE
+      - BUSINESS
+      - COMMUNICATION
+      - UNKNOWN
+    UUID:
+      pattern: "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+      type: string
+      example: 0af401df-7d7a-1f36-817d-7b0a058d0003
+    Vehicle:
+      type: object
+      properties:
+        vehicleId:
+          $ref: '#/components/schemas/UUID'
+        dataOwner:
+          type: string
+          description: Vehicle's owner
+          example: John Doe
+        telemetryProfile:
+          type: string
+          description: Telemtry profile
+          example: Profile
+        currentDriver:
+          type: string
+          description: Current driver of the vehicle
+          example: Jane Doe
+        numberPlate:
+          type: string
+          description: Number plate
+          example: AB-C1-23
+        vin:
+          type: string
+          description: Vehicle Identification Number
+          example: 5sdfsdf4657sd568sdfsd568568
+        color:
+          type: string
+          description: Vehicle's color
+          example: Blue
+    CreateDataRequest_vehicle:
+      type: object
+      properties:
+        vehicle:
+          $ref: '#/components/schemas/Vehicle'
+      example: "{\"vehicleId\":1,\"dataOwner\":\"John Doe\",\"telemetryProfile\":\"\
+        Profile\",\"currentDriver\":\"Jane Doe\",\"numberPlate\":\"AB-C1-23\",\"vin\"\
+        :\"5sdfsdf4657sd568sdfsd568568\",\"color\":\"Blue\"}"
+    UpdateDataRequest_vehicle:
+      type: object
+      properties:
+        vehicle:
+          $ref: '#/components/schemas/Vehicle'
+      example: "{\"dataId\":\"0af401df-7d7a-1f36-817d-7b0a058d0003\"}"
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      x-basicInfoFunc: swagger_server.controllers.authorization_controller.check_basicAuth
+
