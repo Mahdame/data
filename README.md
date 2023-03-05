@@ -21,13 +21,13 @@ python3 -m swagger_server
 and open your browser to here:
 
 ```
-http://localhost:8081/data/ui/
+http://localhost:8081/tracking/ui/
 ```
 
 Your Swagger definition lives here:
 
 ```
-http://localhost:8081/data/swagger.json
+http://localhost:8081/tracking/swagger.json
 ```
 
 To launch the integration tests, use tox:

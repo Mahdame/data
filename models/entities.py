@@ -10,7 +10,7 @@ class Data(db.Model):
     __tablename__ = "data"
 
     data_id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    vehicle_id = db.Column(UUID(as_uuid=True), default=uuid.uuid4, nullable=False)
+    vehicle = db.Column(UUID(as_uuid=True), default=uuid.uuid4, nullable=False)
     date_time = db.Column(db.DateTime, nullable=False, unique=False)
 
     def get_id(self):
